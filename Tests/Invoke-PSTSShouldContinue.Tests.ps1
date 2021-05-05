@@ -1,11 +1,11 @@
 BeforeAll {
-    . $PSScriptRoot\..\PSTestSeams\Public\Invoke-PSTSShouldProcess.ps1
+    . $PSScriptRoot\..\PSTestSeams\Public\Invoke-PSTSShouldContinue.ps1
 }
 
-Describe 'Invoke-PSTSShouldProcess' {
+Describe 'Invoke-PSTSShouldContinue' {
     BeforeAll {
         function CommandUnderTest {
-            Get-Command 'Invoke-PSTSShouldProcess'
+            Get-Command 'Invoke-PSTSShouldContinue'
         }
     }
 
@@ -21,7 +21,7 @@ Describe 'Invoke-PSTSShouldProcess' {
         CommandUnderTest | Should -HaveParameter 'Target' -Type 'string' 
     }
 
-    It 'Should have a string parameter: Operation' {
+    It 'Should have a string parameter: Action' {
         CommandUnderTest | Should -HaveParameter 'Operation' -Type 'string' 
     }
 

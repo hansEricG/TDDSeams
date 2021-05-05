@@ -61,8 +61,8 @@ https://pester.dev/
         [string]
         $Target,
         [string]
-        $Action
+        $Operation
     )
 
-    $Context.ShouldProcess($Target, $Action)
+    $Context.ShouldProcess($Target, $Operation)
 }
