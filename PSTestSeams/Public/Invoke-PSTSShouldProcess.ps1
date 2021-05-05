@@ -1,4 +1,4 @@
-function Invoke-PSTUShouldProcess {
+function Invoke-PSTSShouldProcess {
 <#
 .SYNOPSIS
 A wrapper for the $PSCmdlet.ShouldProcess to enable mocking.
@@ -30,13 +30,13 @@ With code like this
 function Remove-Target {
     [CmdletBinding(ShouldProcess)]
 
-    if (Invoke-PSTUShouldProcess -Context $PSCmdlet -Target "Target" -Action "Action")
+    if (Invoke-PSTSShouldProcess -Context $PSCmdlet -Target "Target" -Action "Action")
 }
 
 To be able to write Pester tests similar to this
 
 It 'Should invoke ShouldProcess' {
-    Mock Invoke-PSTSUShouldProcess { $True }
+    Mock Invoke-PSTSSShouldProcess { $True }
 
     Remove-Target $SomeTarget
 
