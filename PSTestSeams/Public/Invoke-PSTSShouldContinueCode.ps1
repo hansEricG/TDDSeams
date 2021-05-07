@@ -1,24 +1,20 @@
-function Invoke-PSTSShouldProcessCode {
+function Invoke-PSTSShouldContinueCode {
     # This implementation is based on the best practice recommendation in the following page:
     # https://powershellexplained.com/2020-03-15-Powershell-shouldprocess-whatif-confirm-shouldcontinue-everything/
     
-        [CmdletBinding(SupportsShouldProcess)]
+        [CmdletBinding()]
         param (
             [Parameter(Mandatory)]
             [System.Management.Automation.PSCmdlet] $Context,
-            [string] $Target,
-            [string] $Operation,
-            [string] $Message,
+            [string] $Query,
+            [string] $Caption,
             [Parameter(Mandatory)]
             [scriptblock] $Code,
-            [switch] $Force        
+            [switch] $Force
         )
     
-        if ($Force -and -not $Confirm){
-            Set-Variable ConfirmPreference 'None'
-        }
-
-        if (Invoke-PSTSShouldProcess -Context $Context -Message:$Message -Target:$Target -Operation:$Operation) {
+        if ($Force -or (Invoke-PSTSShouldContinue -Context $Context -Query $Query -Caption $Caption)){
             $Code.Invoke()
         }
+
     }

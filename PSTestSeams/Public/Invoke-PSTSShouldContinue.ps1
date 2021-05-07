@@ -55,10 +55,10 @@ function Invoke-PSTSShouldContinue {
             [System.Management.Automation.PSCmdlet]
             $Context,
             [string]
-            $Target,
+            $Query,
             [string]
-            $Operation
+            $Caption
         )
     
-        $Context.ShouldContinue($Target, $Operation)
+        $Context.ShouldContinue($Query, $Caption)
     }

@@ -17,12 +17,12 @@ Describe 'Invoke-PSTSShouldContinue' {
         CommandUnderTest | Should -HaveParameter 'Context' -Type 'System.Management.Automation.PSCmdlet' -Mandatory
     }
 
-    It 'Should have a string parameter: Target' {
-        CommandUnderTest | Should -HaveParameter 'Target' -Type 'string' 
+    It 'Should have a string parameter: Query' {
+        CommandUnderTest | Should -HaveParameter 'Query' -Type 'string' 
     }
 
-    It 'Should have a string parameter: Action' {
-        CommandUnderTest | Should -HaveParameter 'Operation' -Type 'string' 
+    It 'Should have a string parameter: Caption' {
+        CommandUnderTest | Should -HaveParameter 'Caption' -Type 'string' 
     }
 
 }
