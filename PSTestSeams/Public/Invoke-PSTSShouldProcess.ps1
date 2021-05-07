@@ -61,8 +61,14 @@ https://pester.dev/
         [string]
         $Target,
         [string]
-        $Operation
+        $Operation,
+        [string]
+        $Message
     )
 
-    $Context.ShouldProcess($Target, $Operation)
+    if ($Message) {
+        $Context.ShouldProcess($Message, $Target, $Operation)
+    } else {
+        $Context.ShouldProcess($Target, $Operation)
+    }
 }

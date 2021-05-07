@@ -25,4 +25,7 @@ Describe 'Invoke-PSTSShouldProcess' {
         CommandUnderTest | Should -HaveParameter 'Operation' -Type 'string' 
     }
 
+    It 'Should have a string parameter: Message' {
+        CommandUnderTest | Should -HaveParameter 'Message' -Type 'string' 
+    }
 }
