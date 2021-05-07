@@ -2,25 +2,26 @@ function Invoke-PSTSShouldContinue {
     <#
     .SYNOPSIS
     A wrapper for the $PSCmdlet.ShouldContinue to enable mocking.
+
     .DESCRIPTION
     This function allows you to mock the built in ShouldContinue to enable testing code that otherwise prompts the user.
     
     .PARAMETER Context
     The $PSCmdlet object of the calling function
     
-    .PARAMETER Target
-    An optional description of the target on which the operation is performed
+    .PARAMETER Query
+    A message to the user, describing the action to be performed.
     
-    .PARAMETER Action
-    An optional description of the action performed
+    .PARAMETER Caption
+    The title of the action to be performed performed
     
     .EXAMPLE
     Replace code like this
     
-    function Remove-Target {
+    function Remove-Something {
         [CmdletBinding(ShouldProcess)]
     
-        if ($PSCmdlet.ShouldContinue("Target", 'Remove permanently')) {
+        if ($PSCmdlet.ShouldContinue("Do you want to permanently remove the file?", 'Delete file')) {
             # Perform action
         } 
     }
@@ -30,7 +31,7 @@ function Invoke-PSTSShouldContinue {
     function Remove-Target {
         [CmdletBinding(ShouldProcess)]
     
-        if (Invoke-PSTSShouldContinue -Context $PSCmdlet -Target "Target" -Action "Action")
+        if (Invoke-PSTSShouldContinue -Context $PSCmdlet -Query "Do you want to permanently remove the file?" -Caption "Delete file")
     }
     
     To be able to write Pester tests similar to this
@@ -54,8 +55,10 @@ function Invoke-PSTSShouldContinue {
             [Parameter(Mandatory)]
             [System.Management.Automation.PSCmdlet]
             $Context,
+            [Parameter(Mandatory)]
             [string]
             $Query,
+            [Parameter(Mandatory)]
             [string]
             $Caption
         )

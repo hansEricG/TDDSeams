@@ -56,7 +56,7 @@ Describe 'Invoke-PSTSShouldProcessCode' {
 
         Mock Set-Variable { }
 
-        Invoke-PSTSShouldProcessCode -Context $PSCmdlet -Code { } -Force:$Force -Confirm:$Confirm
+        Invoke-PSTSShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { } -Force:$Force -Confirm:$Confirm
 
         if ($ShouldSetConfirmPreferenceToNone) {
             Should -Invoke Set-Variable -ParameterFilter { $Name -eq 'ConfirmPreference' -and $Value -eq 'None' }
@@ -73,7 +73,7 @@ Describe 'Invoke-PSTSShouldProcessCode' {
         }
     }
    
-    It 'Should Invoke the code if Invoke-PSTSShouldProcess returns $true' {
+    It 'Should Invoke the code and return $true if Invoke-PSTSShouldProcess returns $true' {
 
         function DummyFunction {
         }
@@ -81,12 +81,12 @@ Describe 'Invoke-PSTSShouldProcessCode' {
         Mock DummyFunction { }
         Mock Invoke-PSTSShouldProcess { $true }
         
-        Invoke-PSTSShouldProcessCode -Context $PSCmdlet -Code { DummyFunction }
+        Invoke-PSTSShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { DummyFunction } | Should -BeTrue
 
         Should -Invoke DummyFunction
     }
 
-    It 'Should not Invoke the code if Invoke-PSTSShouldProcess returns $false' {
+    It 'Should not Invoke the code and should return $false if Invoke-PSTSShouldProcess returns $false' {
 
         function DummyFunction {
         }
@@ -94,7 +94,7 @@ Describe 'Invoke-PSTSShouldProcessCode' {
         Mock DummyFunction { }
         Mock Invoke-PSTSShouldProcess { $false }
         
-        Invoke-PSTSShouldProcessCode -Context $PSCmdlet -Code { DummyFunction }
+        Invoke-PSTSShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { DummyFunction } | Should -BeFalse
 
         Should -Not -Invoke DummyFunction
     }

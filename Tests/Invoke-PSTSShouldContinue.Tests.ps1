@@ -18,11 +18,11 @@ Describe 'Invoke-PSTSShouldContinue' {
     }
 
     It 'Should have a string parameter: Query' {
-        CommandUnderTest | Should -HaveParameter 'Query' -Type 'string' 
+        CommandUnderTest | Should -HaveParameter 'Query' -Type 'string' -Mandatory
     }
 
     It 'Should have a string parameter: Caption' {
-        CommandUnderTest | Should -HaveParameter 'Caption' -Type 'string' 
+        CommandUnderTest | Should -HaveParameter 'Caption' -Type 'string' -Mandatory
     }
 
 }

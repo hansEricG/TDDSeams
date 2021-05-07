@@ -21,12 +21,12 @@ Describe 'Invoke-PSTSShouldContinueCode' {
         CommandUnderTest | Should -HaveParameter 'Context' -Type 'System.Management.Automation.PSCmdlet' -Mandatory
     }
 
-    It 'Should have an optional string parameter: Query' {
-        CommandUnderTest | Should -HaveParameter 'Query' -Type 'string' 
+    It 'Should have a mandatory string parameter: Query' {
+        CommandUnderTest | Should -HaveParameter 'Query' -Type 'string' -Mandatory
     }
 
-    It 'Should have  an optional string parameter: Caption' {
-        CommandUnderTest | Should -HaveParameter 'Caption' -Type 'string' 
+    It 'Should have  a mandatory string parameter: Caption' {
+        CommandUnderTest | Should -HaveParameter 'Caption' -Type 'string' -Mandatory
     }
 
     It 'Should have  a mandatory scriptblock parameter: Code' {
@@ -42,7 +42,7 @@ Describe 'Invoke-PSTSShouldContinueCode' {
     }
 
     It 'Should run Invoke-PSTSShouldContinue if the Force flag is not set' {
-        Invoke-PSTSShouldContinueCode -Context $PSCmdlet -Code { } -Query 'Qry' -Caption 'Cptn'
+        Invoke-PSTSShouldContinueCode -Context $PSCmdlet -Query 'Qry' -Caption 'Cptn' -Code { } 
 
         Should -Invoke Invoke-PSTSShouldContinue -ParameterFilter { 
             $Query -eq 'Qry' -and $Caption -eq 'Cptn'
@@ -50,12 +50,12 @@ Describe 'Invoke-PSTSShouldContinueCode' {
     }
    
     It 'Should not run Invoke-PSTSShouldContinue if Force flag is set' {
-        Invoke-PSTSShouldContinueCode -Context $PSCmdlet -Code { } -Force
+        Invoke-PSTSShouldContinueCode -Context $PSCmdlet  -Query 'Are you sure?' -Caption 'Really?' -Code { } -Force
 
         Should -Not -Invoke Invoke-PSTSShouldContinue
     }
 
-    It 'Should Invoke the code if Force is set, or if ShouldContinue returns true' -TestCases @(
+    It 'Should Invoke the code and return true if Force is set, or if ShouldContinue returns true. Otherwise false should be returned.' -TestCases @(
         @{ Force = $true; ShouldContinue = $true; ShouldInvokeCode = $true},
         @{ Force = $true; ShouldContinue = $false; ShouldInvokeCode = $true},
         @{ Force = $false; ShouldContinue = $true; ShouldInvokeCode = $true},
@@ -66,7 +66,8 @@ Describe 'Invoke-PSTSShouldContinueCode' {
         Mock DummyFunction { }
         Mock Invoke-PSTSShouldContinue { $ShouldContinue }
         
-        Invoke-PSTSShouldContinueCode -Context $PSCmdlet -Code { DummyFunction } -Force:$Force
+        $ExpectedReturnValue = $ShouldInvokeCode
+        Invoke-PSTSShouldContinueCode -Context $PSCmdlet -Query 'Are you sure?' -Caption 'Really?' -Code { DummyFunction } -Force:$Force | Should -Be $ExpectedReturnValue
 
         if ($ShouldInvokeCode) {
             Should -Invoke DummyFunction
