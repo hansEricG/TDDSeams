@@ -42,7 +42,7 @@ Describe 'Invoke-TDDShouldProcessCode' {
     }
 
     It 'Should have ShouldProcess support' {
-        Test-PSTUCmdletBindingAttribute -Command (CommandUnderTest) -AttributeName 'SupportsShouldProcess' | Should -BeTrue
+        Test-TDDCmdletBindingAttribute -Command (CommandUnderTest) -AttributeName 'SupportsShouldProcess' | Should -BeTrue
     }
 
     It 'Should set $ConfirmPreference to None if -Force and not -Confirm' -TestCases @(

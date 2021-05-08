@@ -38,10 +38,10 @@ Describe 'Invoke-TDDShouldContinueCode' {
     }
 
     It 'Should be an advanced function' {
-        Test-PSTUCmdletBinding -Command (CommandUnderTest) | Should -BeTrue
+        Test-TDDCmdletBinding -Command (CommandUnderTest) | Should -BeTrue
     }
 
-    It 'Should run Invoke-PSTSShouldContinue if the Force flag is not set' {
+    It 'Should run Invoke-TDDShouldContinue if the Force flag is not set' {
         Invoke-TDDShouldContinueCode -Context $PSCmdlet -Query 'Qry' -Caption 'Cptn' -Code { } 
 
         Should -Invoke Invoke-TDDShouldContinue -ParameterFilter { 
@@ -49,7 +49,7 @@ Describe 'Invoke-TDDShouldContinueCode' {
         }
     }
    
-    It 'Should not run Invoke-PSTSShouldContinue if Force flag is set' {
+    It 'Should not run Invoke-TDDShouldContinue if Force flag is set' {
         Invoke-TDDShouldContinueCode -Context $PSCmdlet  -Query 'Are you sure?' -Caption 'Really?' -Code { } -Force
 
         Should -Not -Invoke Invoke-TDDShouldContinue

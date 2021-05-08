@@ -1,6 +1,6 @@
 BeforeAll {
-    Import-Module PSTestUtils
-
+    Import-Module TDDUtils
+    
     # Suppress the PSUseDeclaredVarsMoreThanAssignments warning since it's not correct here.
     # Info on suppressing PSScriptAnalyzer rules can be found here:
     # https://github.com/PowerShell/PSScriptAnalyzer/blob/master/README.md#suppressing-rules
@@ -22,7 +22,7 @@ Describe 'TDDSeams Module' {
         }
 
         It 'Should have valid powershell code' {
-            Test-PSTUPowerShellCode -Path "$ModulePath\$ModuleName.psm1" | Should -BeTrue
+            Test-TDDPowerShellCode -Path "$ModulePath\$ModuleName.psm1" | Should -BeTrue
         }
     }
 
@@ -37,7 +37,7 @@ Describe 'TDDSeams Module' {
                     FunctionFile = $FunctionFile 
                 }
             ) {
-                Test-PSTUPowerShellCode -Path $FunctionFile.PSPath | Should -BeTrue
+                Test-TDDPowerShellCode -Path $FunctionFile.PSPath | Should -BeTrue
             }
 
             It "Public function file '$($FunctionFile.Name)' should have a corresponding test file"  -TestCases @(
