@@ -1,4 +1,4 @@
-function Invoke-PSTSShouldProcess {
+function Invoke-TDDShouldProcess {
 <#
 .SYNOPSIS
 A wrapper for the $PSCmdlet.ShouldProcess to enable mocking.
@@ -34,7 +34,7 @@ With code like this
 function Do-SomeOperation {
     [CmdletBinding(ShouldProcess)]
 
-    if (Invoke-PSTSShouldProcess -Context $PSCmdlet -Target "Target" -Action "Action") {
+    if (Invoke-TDDShouldProcess -Context $PSCmdlet -Target "Target" -Action "Action") {
         # Performa operation
     }
 }
@@ -42,11 +42,11 @@ function Do-SomeOperation {
 To be able to write Pester tests similar to this
 
 It 'Should invoke ShouldProcess' {
-    Mock Invoke-PSTSSShouldProcess { $True }
+    Mock Invoke-TDDSShouldProcess { $True }
 
     Do-SomeOperation $SomeTarget
 
-    Should | -Invoke Invoke-PSTSShouldProcess -Times 1 -Exactly
+    Should | -Invoke Invoke-TDDShouldProcess -Times 1 -Exactly
 }
 .LINK
 https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-shouldprocess

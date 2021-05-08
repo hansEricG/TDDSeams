@@ -1,4 +1,4 @@
-function Invoke-PSTSShouldContinue {
+function Invoke-TDDShouldContinue {
     <#
     .SYNOPSIS
     A wrapper for the $PSCmdlet.ShouldContinue to enable mocking.
@@ -31,17 +31,17 @@ function Invoke-PSTSShouldContinue {
     function Remove-Target {
         [CmdletBinding(ShouldProcess)]
     
-        if (Invoke-PSTSShouldContinue -Context $PSCmdlet -Query "Do you want to permanently remove the file?" -Caption "Delete file")
+        if (Invoke-TDDShouldContinue -Context $PSCmdlet -Query "Do you want to permanently remove the file?" -Caption "Delete file")
     }
     
     To be able to write Pester tests similar to this
     
     It 'Should invoke ShouldContinue' {
-        Mock Invoke-PSTSSShouldContinue { $True }
+        Mock Invoke-TDDShouldContinue { $True }
     
         Remove-Target $SomeTarget
     
-        Should | -Invoke Invoke-PSTSUShouldContinue -Times 1 -Exactly
+        Should | -Invoke Invoke-TDDShouldContinue -Times 1 -Exactly
     }
     .LINK
     https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-shouldprocess

@@ -1,11 +1,11 @@
 BeforeAll {
-    . $PSScriptRoot\..\PSTestSeams\Public\Invoke-PSTSShouldContinue.ps1
+    . $PSScriptRoot\..\TDDSeams\Public\Invoke-TDDShouldContinue.ps1
 }
 
-Describe 'Invoke-PSTSShouldContinue' {
+Describe 'Invoke-TDDShouldContinue' {
     BeforeAll {
         function CommandUnderTest {
-            Get-Command 'Invoke-PSTSShouldContinue'
+            Get-Command 'Invoke-TDDShouldContinue'
         }
     }
 

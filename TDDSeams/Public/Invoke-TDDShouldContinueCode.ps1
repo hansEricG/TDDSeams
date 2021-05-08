@@ -1,4 +1,4 @@
-function Invoke-PSTSShouldContinueCode {
+function Invoke-TDDShouldContinueCode {
     <#
     .SYNOPSIS
     Prompts the user for confirmation before the given code block is invoked.
@@ -23,7 +23,7 @@ function Invoke-PSTSShouldContinueCode {
     function Remove-Something {
         [CmdletBinding()]
     
-        Invoke-PSTSShouldContinueCode -Context $PSCmdlet -Query 'Do you want to permanently remove the file?' -Caption 'Delete file' -Code {
+        Invoke-TDDShouldContinueCode -Context $PSCmdlet -Query 'Do you want to permanently remove the file?' -Caption 'Delete file' -Code {
             Remove-Item $SomeFilePath
         }
     }
@@ -45,7 +45,7 @@ function Invoke-PSTSShouldContinueCode {
             [switch] $Force
         )
     
-        if ($Force -or (Invoke-PSTSShouldContinue -Context $Context -Query $Query -Caption $Caption)) {
+        if ($Force -or (Invoke-TDDShouldContinue -Context $Context -Query $Query -Caption $Caption)) {
             $Code.Invoke()
             $true
         } else {

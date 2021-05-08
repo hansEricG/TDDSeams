@@ -1,16 +1,16 @@
 BeforeAll {
-    . $PSScriptRoot\..\PSTestSeams\Public\Invoke-PSTSShouldProcessCode.ps1
-    . $PSScriptRoot\..\PSTestSeams\Public\Invoke-PSTSShouldProcess.ps1
+    . $PSScriptRoot\..\TDDSeams\Public\Invoke-TDDShouldProcessCode.ps1
+    . $PSScriptRoot\..\TDDSeams\Public\Invoke-TDDShouldProcess.ps1
 }
 
-Describe 'Invoke-PSTSShouldProcessCode' {
+Describe 'Invoke-TDDShouldProcessCode' {
     BeforeAll {
         function CommandUnderTest {
-            Get-Command 'Invoke-PSTSShouldProcessCode'
+            Get-Command 'Invoke-TDDShouldProcessCode'
         }
 
         # To prevent prompting, make sure the should process isn't actually invoked
-        Mock Invoke-PSTSShouldProcess { $false }
+        Mock Invoke-TDDShouldProcess { $false }
     }
 
     It "Should exist" {
@@ -56,7 +56,7 @@ Describe 'Invoke-PSTSShouldProcessCode' {
 
         Mock Set-Variable { }
 
-        Invoke-PSTSShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { } -Force:$Force -Confirm:$Confirm
+        Invoke-TDDShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { } -Force:$Force -Confirm:$Confirm
 
         if ($ShouldSetConfirmPreferenceToNone) {
             Should -Invoke Set-Variable -ParameterFilter { $Name -eq 'ConfirmPreference' -and $Value -eq 'None' }
@@ -65,36 +65,36 @@ Describe 'Invoke-PSTSShouldProcessCode' {
         }
     }
 
-    It 'Should run Invoke-PSTSShouldProcess' {
-        Invoke-PSTSShouldProcessCode -Context $PSCmdlet -Code { } -Message 'Msg' -Target 'Trgt' -Operation 'Op'
+    It 'Should run Invoke-TDDShouldProcess' {
+        Invoke-TDDShouldProcessCode -Context $PSCmdlet -Code { } -Message 'Msg' -Target 'Trgt' -Operation 'Op'
 
-        Should -Invoke Invoke-PSTSShouldProcess -ParameterFilter { 
+        Should -Invoke Invoke-TDDShouldProcess -ParameterFilter { 
             $Message -eq 'Msg' -and $Target -eq 'Trgt' -and $Operation -eq 'Op'
         }
     }
    
-    It 'Should Invoke the code and return $true if Invoke-PSTSShouldProcess returns $true' {
+    It 'Should Invoke the code and return $true if Invoke-TDDShouldProcess returns $true' {
 
         function DummyFunction {
         }
 
         Mock DummyFunction { }
-        Mock Invoke-PSTSShouldProcess { $true }
+        Mock Invoke-TDDShouldProcess { $true }
         
-        Invoke-PSTSShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { DummyFunction } | Should -BeTrue
+        Invoke-TDDShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { DummyFunction } | Should -BeTrue
 
         Should -Invoke DummyFunction
     }
 
-    It 'Should not Invoke the code and should return $false if Invoke-PSTSShouldProcess returns $false' {
+    It 'Should not Invoke the code and should return $false if Invoke-TDDShouldProcess returns $false' {
 
         function DummyFunction {
         }
 
         Mock DummyFunction { }
-        Mock Invoke-PSTSShouldProcess { $false }
+        Mock Invoke-TDDShouldProcess { $false }
         
-        Invoke-PSTSShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { DummyFunction } | Should -BeFalse
+        Invoke-TDDShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { DummyFunction } | Should -BeFalse
 
         Should -Not -Invoke DummyFunction
     }

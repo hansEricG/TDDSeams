@@ -1,16 +1,16 @@
 BeforeAll {
-    . $PSScriptRoot\..\PSTestSeams\Public\Invoke-PSTSShouldContinueCode.ps1
-    . $PSScriptRoot\..\PSTestSeams\Public\Invoke-PSTSShouldContinue.ps1
+    . $PSScriptRoot\..\TDDSeams\Public\Invoke-TDDShouldContinueCode.ps1
+    . $PSScriptRoot\..\TDDSeams\Public\Invoke-TDDShouldContinue.ps1
 }
 
-Describe 'Invoke-PSTSShouldContinueCode' {
+Describe 'Invoke-TDDShouldContinueCode' {
     BeforeAll {
         function CommandUnderTest {
-            Get-Command 'Invoke-PSTSShouldContinueCode'
+            Get-Command 'Invoke-TDDShouldContinueCode'
         }
 
         # To prevent prompting, make sure the should process isn't actually invoked
-        Mock Invoke-PSTSShouldContinue { $false }
+        Mock Invoke-TDDShouldContinue { $false }
     }
 
     It "Should exist" {
@@ -42,17 +42,17 @@ Describe 'Invoke-PSTSShouldContinueCode' {
     }
 
     It 'Should run Invoke-PSTSShouldContinue if the Force flag is not set' {
-        Invoke-PSTSShouldContinueCode -Context $PSCmdlet -Query 'Qry' -Caption 'Cptn' -Code { } 
+        Invoke-TDDShouldContinueCode -Context $PSCmdlet -Query 'Qry' -Caption 'Cptn' -Code { } 
 
-        Should -Invoke Invoke-PSTSShouldContinue -ParameterFilter { 
+        Should -Invoke Invoke-TDDShouldContinue -ParameterFilter { 
             $Query -eq 'Qry' -and $Caption -eq 'Cptn'
         }
     }
    
     It 'Should not run Invoke-PSTSShouldContinue if Force flag is set' {
-        Invoke-PSTSShouldContinueCode -Context $PSCmdlet  -Query 'Are you sure?' -Caption 'Really?' -Code { } -Force
+        Invoke-TDDShouldContinueCode -Context $PSCmdlet  -Query 'Are you sure?' -Caption 'Really?' -Code { } -Force
 
-        Should -Not -Invoke Invoke-PSTSShouldContinue
+        Should -Not -Invoke Invoke-TDDShouldContinue
     }
 
     It 'Should Invoke the code and return true if Force is set, or if ShouldContinue returns true. Otherwise false should be returned.' -TestCases @(
@@ -64,10 +64,10 @@ Describe 'Invoke-PSTSShouldContinueCode' {
         function DummyFunction {
         }
         Mock DummyFunction { }
-        Mock Invoke-PSTSShouldContinue { $ShouldContinue }
+        Mock Invoke-TDDShouldContinue { $ShouldContinue }
         
         $ExpectedReturnValue = $ShouldInvokeCode
-        Invoke-PSTSShouldContinueCode -Context $PSCmdlet -Query 'Are you sure?' -Caption 'Really?' -Code { DummyFunction } -Force:$Force | Should -Be $ExpectedReturnValue
+        Invoke-TDDShouldContinueCode -Context $PSCmdlet -Query 'Are you sure?' -Caption 'Really?' -Code { DummyFunction } -Force:$Force | Should -Be $ExpectedReturnValue
 
         if ($ShouldInvokeCode) {
             Should -Invoke DummyFunction

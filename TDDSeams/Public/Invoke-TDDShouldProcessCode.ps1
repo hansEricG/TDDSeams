@@ -1,4 +1,4 @@
-function Invoke-PSTSShouldProcessCode {
+function Invoke-TDDShouldProcessCode {
     <#
     .SYNOPSIS
     Invokes the built-in ShouldProcess before the given code block is invoked.
@@ -26,7 +26,7 @@ function Invoke-PSTSShouldProcessCode {
     function Remove-Something {
         [CmdletBinding()]
     
-        Invoke-PSTSShouldProcessCode -Context $PSCmdlet -Target 'My settings' -Operation 'Permanently remove' -Code {
+        Invoke-TDDShouldProcessCode -Context $PSCmdlet -Target 'My settings' -Operation 'Permanently remove' -Code {
             Remove-Item $SettingsFilePath
         }
     }
@@ -52,7 +52,7 @@ function Invoke-PSTSShouldProcessCode {
             Set-Variable ConfirmPreference 'None'
         }
 
-        if (Invoke-PSTSShouldProcess -Context $Context -Message:$Message -Target:$Target -Operation:$Operation) {
+        if (Invoke-TDDShouldProcess -Context $Context -Message:$Message -Target:$Target -Operation:$Operation) {
             $Code.Invoke()
             $true
         } else {
