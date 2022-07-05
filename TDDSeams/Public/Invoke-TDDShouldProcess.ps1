@@ -42,11 +42,11 @@ function Do-SomeOperation {
 To be able to write Pester tests similar to this
 
 It 'Should invoke ShouldProcess' {
-    Mock Invoke-TDDSShouldProcess { $True }
+    Mock Invoke-TDDSShouldProcess -ModuleName TDDSeams { $True }
 
     Do-SomeOperation $SomeTarget
 
-    Should | -Invoke Invoke-TDDShouldProcess -Times 1 -Exactly
+    Should | -Invoke Invoke-TDDShouldProcess -ModuleName TDDSeams -Times 1 -Exactly
 }
 .LINK
 https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-shouldprocess

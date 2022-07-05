@@ -18,16 +18,23 @@ function Invoke-TDDShouldContinueCode {
     
     .PARAMETER Force
     If set, the command will invoke the code without prompting the user.
+
+    .OUTPUTS
+    $true if the user gave consent and the provided code was run, otherwise $false
     
     .EXAMPLE
     function Remove-Something {
         [CmdletBinding()]
     
-        Invoke-TDDShouldContinueCode -Context $PSCmdlet -Query 'Do you want to permanently remove the file?' -Caption 'Delete file' -Code {
-            Remove-Item $SomeFilePath
-        }
+        Invoke-TDDShouldContinueCode 
+            -Context $PSCmdlet 
+            -Query 'Do you want to permanently remove the file?'  
+            -Caption 'Delete file' 
+            -Code {
+                Remove-Item $SomeFilePath
+            }
     }
-    
+
     .LINK
     https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-shouldprocess
     #>

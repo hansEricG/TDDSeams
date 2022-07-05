@@ -31,17 +31,20 @@ function Invoke-TDDShouldContinue {
     function Remove-Target {
         [CmdletBinding(ShouldProcess)]
     
-        if (Invoke-TDDShouldContinue -Context $PSCmdlet -Query "Do you want to permanently remove the file?" -Caption "Delete file")
+        if (Invoke-TDDShouldContinue -Context $PSCmdlet -Query "Do you want to permanently remove the file?" 
+            -Caption "Delete file") {
+                # Perform action
+        }
     }
     
-    To be able to write Pester tests similar to this
+    And be able to write Pester tests similar to this
     
     It 'Should invoke ShouldContinue' {
-        Mock Invoke-TDDShouldContinue { $True }
+        Mock Invoke-TDDShouldContinue -ModuleName TDDSeams { $True }
     
         Remove-Target $SomeTarget
     
-        Should | -Invoke Invoke-TDDShouldContinue -Times 1 -Exactly
+        Should | -Invoke Invoke-TDDShouldContinue -ModuleName TDDSeams -Times 1 -Exactly
     }
     .LINK
     https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-shouldprocess

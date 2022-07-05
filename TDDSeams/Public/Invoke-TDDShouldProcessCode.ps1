@@ -20,7 +20,10 @@ function Invoke-TDDShouldProcessCode {
     An optional custom message to be used instead of the built-in message
     
     .PARAMETER Force
-    If set, the command will invoke the code without prompting the user.
+    If set, the command will invoke the code without prompting the user
+
+    .OUTPUTS
+    $true if user gives consent and the code is run, otherwise $false
     
     .EXAMPLE
     function Remove-Something {
