@@ -41,11 +41,11 @@ And mock it in a Pester test, like this:
 
 ```
 It 'Should invoke ShouldProcess' {
-    Mock Invoke-TDDSShouldProcess -ModuleName TDDSeams { $True }
+    Mock Invoke-TDDSShouldProcess { $True }
 
     Do-SomeOperation $SomeTarget
 
-    Should | -Invoke Invoke-TDDShouldProcess -ModuleName TDDSeams -Times 1 -Exactly
+    Should | -Invoke Invoke-TDDShouldProcess -Times 1 -Exactly
 }
 ```
 
@@ -65,8 +65,6 @@ function Remove-Something {
     }
 }
 ```
-
-The `Invoke-TDDShouldProcessCode` invokes the `Invoke-TDDShouldProcess` command internally, so the Pester tests can be written in the same way as shown before (mocking the `Invoke-TDDShouldProcess` command).
 
 ## Credits
 
