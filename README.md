@@ -68,12 +68,12 @@ function Remove-Something {
 
 ## Credits
 
-# Pester
+### Pester
 I have to give a shoutout to the amazing [Pester project](https://github.com/pester/Pester). It's the absolutly best tool to ensure your PowerShell code does what you intended. It's super easy and intuitive to get started with, and if you get into the habit of writing those tests first, you get all the benefits of Test Driven Development.
 
-# Kevin Marquette
+### Kevin Marquette
 [Kevin Marquette](https://github.com/KevinMarquette)'s wonderful blog post [Powershell: Everything you wanted to know about ShouldProcess](https://powershellexplained.com/2020-03-15-Powershell-shouldprocess-whatif-confirm-shouldcontinue-everything) is a must read if you want to know the ins and outs of the ShouldProcess and ShouldContinue features of PowerShell.
 
-# Adam Driscoll
+### Adam Driscoll
 Big thank you to [Adam Driscoll](https://github.com/adamdriscoll) whos [How to Publish a PowerShell Module to the PowerShell Gallery tutorial video](https://www.youtube.com/watch?v=TdWWUOJ4s7A) helped a lot when i decided to make TDDUtils publicly available.
  
