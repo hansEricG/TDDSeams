@@ -11,6 +11,16 @@ Describe 'Invoke-TDDShouldProcessCode' {
 
         # To prevent prompting, make sure the should process isn't actually invoked
         Mock Invoke-TDDShouldProcess { $false }
+
+        # Helper function to ensure $PSContext being available
+        # See the below link for more information on the issue that this solves
+        # https://github.com/pester/Pester/issues/2209#issuecomment-1181749455
+        function InvokeInCmdlet {
+            [CmdletBinding()]
+            param($ScriptBlock)
+            . $ScriptBlock
+        }
+
     }
 
     It "Should exist" {
@@ -56,7 +66,10 @@ Describe 'Invoke-TDDShouldProcessCode' {
 
         Mock Set-Variable { }
 
-        Invoke-TDDShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { } -Force:$Force -Confirm:$Confirm
+        InvokeInCmdlet {
+            # Ensures that $PSCmdlet is available below
+            Invoke-TDDShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { } -Force:$Force -Confirm:$Confirm
+        }
 
         if ($ShouldSetConfirmPreferenceToNone) {
             Should -Invoke Set-Variable -ParameterFilter { $Name -eq 'ConfirmPreference' -and $Value -eq 'None' }
@@ -66,7 +79,10 @@ Describe 'Invoke-TDDShouldProcessCode' {
     }
 
     It 'Should run Invoke-TDDShouldProcess' {
-        Invoke-TDDShouldProcessCode -Context $PSCmdlet -Code { } -Message 'Msg' -Target 'Trgt' -Operation 'Op'
+        InvokeInCmdlet {
+            # Ensures that $PSCmdlet is available below
+            Invoke-TDDShouldProcessCode -Context $PSCmdlet -Code { } -Message 'Msg' -Target 'Trgt' -Operation 'Op'
+        }
 
         Should -Invoke Invoke-TDDShouldProcess -ParameterFilter { 
             $Message -eq 'Msg' -and $Target -eq 'Trgt' -and $Operation -eq 'Op'
@@ -81,20 +97,24 @@ Describe 'Invoke-TDDShouldProcessCode' {
         Mock DummyFunction { }
         Mock Invoke-TDDShouldProcess { $true }
         
-        Invoke-TDDShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { DummyFunction } | Should -BeTrue
-
+        InvokeInCmdlet {
+            # Ensures that $PSCmdlet is available below
+            Invoke-TDDShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { DummyFunction } | Should -BeTrue
+        }
         Should -Invoke DummyFunction
     }
 
     It 'Should not Invoke the code and should return $false if Invoke-TDDShouldProcess returns $false' {
-
         function DummyFunction {
         }
 
         Mock DummyFunction { }
         Mock Invoke-TDDShouldProcess { $false }
         
-        Invoke-TDDShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { DummyFunction } | Should -BeFalse
+        InvokeInCmdlet {
+            # Ensures that $PSCmdlet is available below
+            Invoke-TDDShouldProcessCode -Context $PSCmdlet -Target 'Target' -Operation 'Operation' -Code { DummyFunction } | Should -BeFalse
+        }
 
         Should -Not -Invoke DummyFunction
     }

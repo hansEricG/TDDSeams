@@ -11,6 +11,15 @@ Describe 'Invoke-TDDShouldContinueCode' {
 
         # To prevent prompting, make sure the should process isn't actually invoked
         Mock Invoke-TDDShouldContinue { $false }
+
+        # Helper function to ensure $PSContext being available
+        # See the below link for more information on the issue that this solves
+        # https://github.com/pester/Pester/issues/2209#issuecomment-1181749455
+        function InvokeInCmdlet {
+            [CmdletBinding()]
+            param($ScriptBlock)
+            . $ScriptBlock
+        }
     }
 
     It "Should exist" {
@@ -42,7 +51,10 @@ Describe 'Invoke-TDDShouldContinueCode' {
     }
 
     It 'Should run Invoke-TDDShouldContinue if the Force flag is not set' {
-        Invoke-TDDShouldContinueCode -Context $PSCmdlet -Query 'Qry' -Caption 'Cptn' -Code { } 
+        InvokeInCmdlet {        
+            # Ensures that $PSCmdlet is available below
+            Invoke-TDDShouldContinueCode -Context $PSCmdlet -Query 'Qry' -Caption 'Cptn' -Code { } 
+        }
 
         Should -Invoke Invoke-TDDShouldContinue -ParameterFilter { 
             $Query -eq 'Qry' -and $Caption -eq 'Cptn'
@@ -50,7 +62,10 @@ Describe 'Invoke-TDDShouldContinueCode' {
     }
    
     It 'Should not run Invoke-TDDShouldContinue if Force flag is set' {
-        Invoke-TDDShouldContinueCode -Context $PSCmdlet  -Query 'Are you sure?' -Caption 'Really?' -Code { } -Force
+        InvokeInCmdlet {        
+            # Ensures that $PSCmdlet is available below
+            Invoke-TDDShouldContinueCode -Context $PSCmdlet  -Query 'Are you sure?' -Caption 'Really?' -Code { } -Force
+        }
 
         Should -Not -Invoke Invoke-TDDShouldContinue
     }
@@ -67,7 +82,10 @@ Describe 'Invoke-TDDShouldContinueCode' {
         Mock Invoke-TDDShouldContinue { $ShouldContinue }
         
         $ExpectedReturnValue = $ShouldInvokeCode
-        Invoke-TDDShouldContinueCode -Context $PSCmdlet -Query 'Are you sure?' -Caption 'Really?' -Code { DummyFunction } -Force:$Force | Should -Be $ExpectedReturnValue
+        InvokeInCmdlet {        
+            # Ensures that $PSCmdlet is available below
+            Invoke-TDDShouldContinueCode -Context $PSCmdlet -Query 'Are you sure?' -Caption 'Really?' -Code { DummyFunction } -Force:$Force | Should -Be $ExpectedReturnValue
+        }
 
         if ($ShouldInvokeCode) {
             Should -Invoke DummyFunction
