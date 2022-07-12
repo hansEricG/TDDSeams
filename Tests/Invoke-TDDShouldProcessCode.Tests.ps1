@@ -21,15 +21,15 @@ Describe 'Invoke-TDDShouldProcessCode' {
         CommandUnderTest | Should -HaveParameter 'Context' -Type 'System.Management.Automation.PSCmdlet' -Mandatory
     }
 
-    It 'Should have an optional string parameter: Target' {
-        CommandUnderTest | Should -HaveParameter 'Target' -Type 'string' 
+    It 'Should have a mandatory string parameter: Target' {
+        CommandUnderTest | Should -HaveParameter 'Target' -Type 'string' -Mandatory
     }
 
-    It 'Should have  an optional string parameter: Operation' {
+    It 'Should have an optional string parameter: Operation' {
         CommandUnderTest | Should -HaveParameter 'Operation' -Type 'string' 
     }
 
-    It 'Should have  an optional string parameter: Message' {
+    It 'Should have an optional string parameter: Message' {
         CommandUnderTest | Should -HaveParameter 'Message' -Type 'string' 
     }
 
@@ -42,7 +42,7 @@ Describe 'Invoke-TDDShouldProcessCode' {
     }
 
     It 'Should have ShouldProcess support' {
-        Test-TDDCmdletBindingAttribute -Command (CommandUnderTest) -AttributeName 'SupportsShouldProcess' | Should -BeTrue
+        Test-TDDCmdletBinding -Command (CommandUnderTest) | Should -BeTrue
     }
 
     It 'Should set $ConfirmPreference to None if -Force and not -Confirm' -TestCases @(

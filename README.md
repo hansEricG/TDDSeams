@@ -65,6 +65,16 @@ function Remove-Something {
     }
 }
 ```
+## Note on testing
+Many of the tests in this module use the auto-variable $PSCmdlet. This variable is not set if you run the tests from a PowerShell consol (but works if run from VS Code editor) which will result in these tests failing. To avoid this problem, use the below code.
+
+```
+& {
+    [cmdletbinding()]
+    param()
+    Invoke-Pester -Output Detailed -Path <path to test folder>
+}
+```
 
 ## Credits
 

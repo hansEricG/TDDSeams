@@ -42,8 +42,8 @@ function Invoke-TDDShouldProcessCode {
         param (
             [Parameter(Mandatory)]
             [System.Management.Automation.PSCmdlet] $Context,
-            [string] $Target,
             [Parameter(Mandatory)]
+            [string] $Target,
             [string] $Operation,
             [Parameter(Mandatory)]
             [scriptblock] $Code,

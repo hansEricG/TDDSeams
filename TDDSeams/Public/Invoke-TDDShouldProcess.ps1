@@ -64,8 +64,10 @@ https://pester.dev/
         [Parameter(Mandatory)]
         [System.Management.Automation.PSCmdlet]
         $Context,
+        [Parameter(Mandatory)]
         [string]
         $Target,
+        [Parameter(Mandatory)]
         [string]
         $Operation,
         [string]
