@@ -18,11 +18,11 @@ Describe 'Invoke-TDDShouldProcess' {
     }
 
     It 'Should have a string parameter: Target' {
-        CommandUnderTest | Should -HaveParameter 'Target' -Type 'string' 
+        CommandUnderTest | Should -HaveParameter 'Target' -Type 'string' -Mandatory
     }
 
     It 'Should have a string parameter: Operation' {
-        CommandUnderTest | Should -HaveParameter 'Operation' -Type 'string' 
+        CommandUnderTest | Should -HaveParameter 'Operation' -Type 'string' -Mandatory
     }
 
     It 'Should have a string parameter: Message' {
